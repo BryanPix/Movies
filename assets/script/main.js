@@ -1,6 +1,24 @@
-let searchBtn = document.querySelector('#searchBtn');
-searchBtn.addEventListener('click', fetchData);
+let enter = document.querySelector('#enterField');
+enter.addEventListener('keyup', function(event) {
 
+  if (event.key === "Enter") {
+    event.preventDefault();
+    fetchData();
+  }
+});
+
+// //Now Playing
+// const options = {
+//   method: 'GET',
+//   headers: {
+//     accept: 'application/json',
+//     Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1MTdjYzc0OTU1MTQ5YmUyM2RmODM4MTNmMjAxYTRlOCIsInN1YiI6IjYyODM5OGJiZWM0NTUyMTAzMmE5NTcxMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.REF4Oi-K06F7Jq8LolG5vPQtyeiGk3nBFdDyL1FLq7E'
+//   }
+// };
+
+fetch('https://api.themoviedb.org/3/movie/now_playing?language=fr-FR&page=1', options)
+
+// search films
 function  fetchData() {
   const infosContainer = document.querySelector('#infos');
   infosContainer.innerHTML = "";
@@ -12,7 +30,7 @@ function  fetchData() {
     }
   };
   
-  let movieSearch = document.querySelector('#searchInput').value;
+  let movieSearch = document.querySelector('#enterField').value;
 
   fetch(`https://api.themoviedb.org/3/search/movie?query=${movieSearch}&include_adult=true&language=fr-FR&page=1`, options)
   .then(response => response.json())
@@ -35,13 +53,15 @@ function  fetchData() {
 
       // Créer la structure de la carte de film
       const cardHTML = `
-      <div class="divCards" style="height:40rem;width=50%" ;>
+      <div class="divCards" style="height:20rem;width=50%" ;>
             <img src="https://image.tmdb.org/t/p/original${movie.poster_path}" alt="Image de ${movie.title}">
-            <p class="Ptitle">${movie.title}</p>
-            <p class="releaseD"><i> ${movie.release_date}</i></p>
-            <p class="voteA">${movie.vote_average *10}</p> 
-            <a href="movie.html?id=${movie.id}" class="BtnV">Voir le film</a>
+            <div class="overlay-text">
+            <p class="Ptitle img__description">${movie.title}</p>
+            <p class="releaseD img__description"><i> ${movie.release_date}</i></p>
+            <p class="voteA img__description">${movie.vote_average *10}</p> 
+            <a href="movie.html?id=${movie.id}" class="BtnV img__description">Voir le film</a>
            </div>
+            </div>
         `
       ;
 
